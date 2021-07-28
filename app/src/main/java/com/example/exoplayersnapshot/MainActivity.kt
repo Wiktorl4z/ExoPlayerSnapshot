@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.TextureView
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,8 +36,9 @@ class MainActivity : AppCompatActivity() {
         initializePlayer()
 
         binding.button.setOnClickListener {
+            val textureView = binding.playerView.videoSurfaceView as TextureView
             // get the bitmap of the view
-            val bitmap = getScreenShotFromView(binding.textureView)
+            val bitmap = getScreenShotFromView(textureView)
             // if bitmap is not null then save it to gallery
             if (bitmap != null) {
                 saveMediaToStorage(bitmap)
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         val player = SimpleExoPlayer.Builder(this).build()
         player.setMediaItem(MediaItem.fromUri(rtsp))
         player.prepare()
-        player.setVideoTextureView(binding.textureView)
+        binding.playerView.player = player
     }
 
     private fun getScreenShotFromView(v: View): Bitmap? {
